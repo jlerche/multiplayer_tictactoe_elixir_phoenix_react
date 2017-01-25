@@ -1,0 +1,2 @@
+If react was properly imported we should get something right after this colon:
+<div id="hello-world"></div>
