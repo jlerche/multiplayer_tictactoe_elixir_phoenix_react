@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/jlerche/multiplayer_tictactoe_elixir_phoenix_react.svg?branch=master)](https://travis-ci.org/jlerche/multiplayer_tictactoe_elixir_phoenix_react)
 # Tee
 
 To start your Phoenix app:
