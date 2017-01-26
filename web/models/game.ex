@@ -4,7 +4,7 @@ defmodule Tee.Game do
   schema "games" do
     field :name, :string
     field :full, :boolean, default: false
-    field :winner, :string
+    field :winner, :string, default: ""
 
     timestamps()
   end
@@ -15,6 +15,6 @@ defmodule Tee.Game do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:name, :full, :winner])
-    |> validate_required([:name, :full, :winner])
+    |> validate_required([:name, :full,])
   end
 end

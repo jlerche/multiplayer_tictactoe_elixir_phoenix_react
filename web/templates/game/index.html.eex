@@ -28,3 +28,5 @@
 </table>
 
 <%= link "New game", to: game_path(@conn, :new) %>
+
+<div id="game-lobby"></div>

@@ -34,3 +34,10 @@ let hello_world_element = document.getElementById("hello-world")
 if (hello_world_element) {
     render(<HelloWorld />, hello_world_element)
 }
+
+import Lobby from './Components/Lobby';
+
+let game_lobby_element = document.getElementById("game-lobby");
+if (game_lobby_element) {
+    render(<Lobby />, game_lobby_element)
+}

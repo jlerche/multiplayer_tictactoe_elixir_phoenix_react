@@ -3,6 +3,7 @@ defmodule Tee.UserSocket do
 
   ## Channels
   # channel "room:*", Tee.RoomChannel
+  channel "lobby:lobby", Tee.LobbyChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

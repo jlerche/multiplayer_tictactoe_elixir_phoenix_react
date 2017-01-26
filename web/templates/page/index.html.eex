@@ -1,2 +1,4 @@
 If react was properly imported we should get something right after this colon:
 <div id="hello-world"></div>
+
+<%= link "Go to game lobby", to: game_path(@conn, :index) %>
