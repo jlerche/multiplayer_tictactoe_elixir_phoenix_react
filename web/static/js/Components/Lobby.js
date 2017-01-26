@@ -11,6 +11,9 @@ export default class Lobby extends React.Component {
 
     }
     componentDidMount() {
+        let lobbyChannel = this.setupChannel()
+    }
+    setupChannel() {
         let socket = new Socket("/socket");
         socket.connect()
         let lobbyChannel = socket.channel("lobby:lobby")
@@ -25,11 +28,12 @@ export default class Lobby extends React.Component {
                 this.setState({games})
             })
             .receive("error", reason => { console.log("error: ", reason)})
+        return lobbyChannel
     }
     renderGame(game) {
         return (
-            <tr>
-                <td>{game.name}</td>
+            <tr key={game.id}>
+                <td key={game.id}>{game.name}</td>
             </tr>
         )
     }
