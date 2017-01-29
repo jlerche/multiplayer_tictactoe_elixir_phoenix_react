@@ -1,5 +1,5 @@
 defmodule Tee.CreateFixtures do
-    alias Tee.Repo
+    alias Tee.GameService
 
     def create(num) do
         

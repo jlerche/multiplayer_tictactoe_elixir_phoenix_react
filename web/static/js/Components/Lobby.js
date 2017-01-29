@@ -17,8 +17,15 @@ export default class Lobby extends React.Component {
         let socket = new Socket("/socket");
         socket.connect()
         let lobbyChannel = socket.channel("lobby:lobby")
-        lobbyChannel.on("foo", msg => {
-            console.log("we dem boys")
+        lobbyChannel.on("add_game", game => {
+            let games = this.state.games
+            games.push(game)
+            this.setState({games})
+        })
+        lobbyChannel.on("rem_game", game => {
+            let games = this.state.games
+            games = games.filter((el) => el.id !== game.id)
+            this.setState({games})
         })
         lobbyChannel
             .join()

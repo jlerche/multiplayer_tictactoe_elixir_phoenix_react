@@ -1,4 +1,4 @@
-<h2>Listing games</h2>
+<h2>Listing games (html)</h2>
 
 <table class="table">
   <thead>
@@ -29,4 +29,5 @@
 
 <%= link "New game", to: game_path(@conn, :new) %>
 
+<h2>Listing games (react component)</h2>
 <div id="game-lobby"></div>
