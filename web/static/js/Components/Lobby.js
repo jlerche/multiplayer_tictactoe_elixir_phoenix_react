@@ -40,7 +40,7 @@ export default class Lobby extends React.Component {
     renderGame(game) {
         return (
             <tr key={game.id}>
-                <td key={game.id}>{game.name}</td>
+                <td key={game.id}><a href={`${window.location.pathname}/${game.id}`}>{game.name}</a></td>
             </tr>
         )
     }

@@ -11,7 +11,7 @@
     <%= error_tag f, :name %>
   </div>
 
-  <div class="form-group">
+  <!-- <div class="form-group">
     <%= label f, :full, class: "control-label" %>
     <%= checkbox f, :full, class: "form-control" %>
     <%= error_tag f, :full %>
@@ -21,7 +21,7 @@
     <%= label f, :winner, class: "control-label" %>
     <%= text_input f, :winner, class: "form-control" %>
     <%= error_tag f, :winner %>
-  </div>
+  </div> -->
 
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>

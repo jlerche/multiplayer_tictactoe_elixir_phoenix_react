@@ -9,8 +9,7 @@ defmodule Tee.GameService do
         |> Multi.run(:broadcast_rem, &broadcast_rem/1)
     end
 
-    def create(params) do
-        changeset = Game.changeset(%Game{}, params)
+    def create(changeset) do
         Multi.new
         |> Multi.insert(:game, changeset)
         |> Multi.run(:broadcast_add, &broadcast_add/1)
