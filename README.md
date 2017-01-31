@@ -28,4 +28,6 @@ must be successful for the entire transaction to be as well. So for example,
 if we want to communicate the creation of a resource model to the frontend via
 a channel, but only if the creation was actually committed to the database
 (for obvious reasons), we can simply do `Multi.new |> Multi.insert(changeset) |> Multi.run(:foo, &foo/1)`
-where `foo` is a function that broadcasts to a channel. 
+where `foo` is a function that broadcasts to a channel. See `web/services/game_service.ex`
+for an example of using `Ecto.Multi` and `web/controllers/game_controller.ex` for
+an example of calling it with `Repo.transaction` and how to handle the output.
