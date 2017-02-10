@@ -41,3 +41,10 @@ let game_lobby_element = document.getElementById("game-lobby");
 if (game_lobby_element) {
     render(<Lobby />, game_lobby_element)
 }
+
+import Game from './Components/Game';
+
+let game_element = document.getElementById("game");
+if (game_element) {
+    render(<Game />, game_element)
+}

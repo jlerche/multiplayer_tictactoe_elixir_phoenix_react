@@ -17,10 +17,10 @@ defmodule Tee.GameController do
     changeset = Game.changeset(%Game{}, game_params)
 
     case Repo.transaction(Tee.GameService.create(changeset)) do
-      {:ok, _game} ->
+      {:ok, %{game: game}} ->
         conn
         |> put_flash(:info, "Game created successfully.")
-        |> redirect(to: game_path(conn, :index))
+        |> redirect(to: game_path(conn, :show, game))
       {:error, _failed_op, changeset, _changes_so_far} ->
         render(conn, "new.html", changeset: changeset)
     end
