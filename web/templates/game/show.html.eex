@@ -1,4 +1,4 @@
-<div id="game" style="display:flexg"></div>
+<div id="game" style="display:flex"></div>
 <div class="">
     <%= link "Back to lobby", to: game_path(@conn, :index) %>
 </div>
