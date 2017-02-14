@@ -6,7 +6,10 @@ defmodule Tee.GameState do
         turn: :player_one,
         player_one: nil,
         player_two: nil,
-        winner: nil
+        winner: nil,
+        board: [
+            "", "", "", "", "", "", "", "", ""
+        ],
     ]
 
     # CLIENT
@@ -17,6 +20,10 @@ defmodule Tee.GameState do
 
     def join(id, user, pid) do
         try_call(id, {:join, user, pid})
+    end
+
+    def update(id, board, player) do
+        try_cast(id, {:update, player, board})
     end
 
     # SERVER
@@ -40,6 +47,13 @@ defmodule Tee.GameState do
         end
     end
 
+    def handle_cast({:update, board, player}, game) do
+        game = %{game | board: board, turn: get_other_player(player),
+                    winner: check_winner(board)}
+        Tee.Endpoint.broadcast("game:" <> Integer.to_string(game.id), "state_update", game)
+        {:noreply, game}
+    end
+
     defp ref(id), do: {:global, {:game, String.to_integer(id)}}
 
     defp try_call(id, message) do
@@ -51,10 +65,34 @@ defmodule Tee.GameState do
         end
     end
 
+    defp try_cast(id, message) do
+        case GenServer.whereis(ref(Integer.to_string(id))) do
+            nil ->
+                {:error, "Game does not exist"}
+            pid ->
+                GenServer.cast(pid, message)
+        end
+    end
+
+    defp get_other_player(player) do
+        case player do
+            "player_one" -> :player_two
+            "player_two" -> :player_one
+        end
+    end
+
     defp add_player(%__MODULE__{player_one: nil} = game, user) do
         %{game | player_one: user}
     end
     defp add_player(%__MODULE__{player_two: nil} = game, user) do
         %{game | player_two: user}
+    end
+
+    defp check_winner(["X", "X", "X", _, _, _, _, _, _]) do
+        :player_one
+    end
+
+    defp check_winner(_) do
+        nil
     end
 end

@@ -12,13 +12,15 @@ export default class Game extends React.Component {
             ],
             winner: null,
             players: {},
-            player: ""
+            player: "",
+            id: ""
         }
         this.renderPlayers = this.renderPlayers.bind(this)
+        this.channel = null
 
     }
     componentDidMount() {
-        let gameChannel = this.setupChannel()
+        this.channel = this.setupChannel()
     }
     getUsername() {
         let userName = local
@@ -40,13 +42,22 @@ export default class Game extends React.Component {
         })
         channel.on('init_sync', payload => {
             console.log(payload)
+            let player = payload.player
+            let turn = payload.game.turn
+            turn = player === "player_one" ? true : false
+            let symbol = this.getSymbol(player)
+            let id = payload.game.id
+            let board = payload.game.board
+            this.setState({player,turn, symbol, id, board})
+        })
+        channel.on('state_update', payload => {
+            console.log(payload)
+            let board = payload.board
             let player = this.state.player
-            player = payload.player
-            let turn = this.state.turn
-            turn = payload.game.turn
-            let symbol = this.state.symbol
-            symbol = this.getSymbol(player)
-            this.setState({player,turn, symbol})
+            let turn = player == payload.turn ? true : false
+            let winner = payload.winner
+            this.setState({turn, winner, board})
+
         })
         channel.join()
             .receive("ok", resp => {console.log("Joined", resp)})
@@ -58,6 +69,14 @@ export default class Game extends React.Component {
             return "X"
         } else {
             return "O"
+        }
+    }
+    handleClick(index) {
+        if(this.state.board[index] === "" && !this.state.winner && this.state.turn) {
+            let board = this.state.board
+            board[index] = this.state.symbol
+            this.channel.push('new_move', {game_id: this.state.id, board: board,
+                player: this.state.player})
         }
     }
     renderPlayers(player) {
@@ -88,7 +107,8 @@ export default class Game extends React.Component {
                     <div className="col-8">
                         <div className="board" style={board_styles}>
                             {this.state.board.map((cell, index) => {
-                                return <div style={cell_styles} key={index}>{cell}</div>
+                                return <div style={cell_styles} key={index}
+                                    onClick={() => this.handleClick(index)}>{cell}</div>
                             })}
                         </div>
                     </div>

@@ -9,8 +9,8 @@ defmodule Tee.GameChannel do
         case GameState.join(game_id, user, socket.channel_pid) do
             {:ok, _pid, game} ->
                 %{^user => player} = get_player_info(game)
-                # push socket, "init_sync", %{game: game, player: player}
                 socket = assign(socket, :player, player) |> assign(:game, game)
+                    |> assign(:game_id, game_id)
                 send self, :init_sync
                 {:ok, socket}
             {:error, reason} ->
@@ -18,8 +18,12 @@ defmodule Tee.GameChannel do
         end
     end
 
-    def handle_in("game_joined", message, socket) do
-        user = socket.assigns.user
+    def handle_in("new_move", payload, socket) do
+        %{"board" => board, "game_id" => game_id, "player" => player} = payload
+        case GameState.update(game_id, player, board) do
+            :ok ->
+                {:noreply, socket}
+        end
     end
 
     def handle_info(:init_sync, socket) do
