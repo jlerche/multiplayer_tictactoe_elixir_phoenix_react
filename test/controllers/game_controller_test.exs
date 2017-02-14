@@ -17,8 +17,9 @@ defmodule Tee.GameControllerTest do
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
     conn = post conn, game_path(conn, :create), game: @valid_attrs
-    assert redirected_to(conn) == game_path(conn, :index)
-    assert Repo.get_by(Game, @valid_attrs)
+    game = Repo.get_by(Game, @valid_attrs)
+    assert redirected_to(conn) == game_path(conn, :show, game)
+    assert game
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -29,7 +30,7 @@ defmodule Tee.GameControllerTest do
   test "shows chosen resource", %{conn: conn} do
     game = Repo.insert! %Game{}
     conn = get conn, game_path(conn, :show, game)
-    assert html_response(conn, 200) =~ "Show game"
+    assert html_response(conn, 200) =~ "Online Users"
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do
