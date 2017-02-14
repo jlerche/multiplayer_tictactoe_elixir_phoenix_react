@@ -4,6 +4,7 @@ defmodule Tee.UserSocket do
   ## Channels
   # channel "room:*", Tee.RoomChannel
   channel "lobby:lobby", Tee.LobbyChannel
+  channel "game:*", Tee.GameChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
@@ -21,7 +22,7 @@ defmodule Tee.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   def connect(_params, socket) do
-    {:ok, socket}
+    {:ok, assign(socket, :user, UUID.uuid1())}
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:

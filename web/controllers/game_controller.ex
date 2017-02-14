@@ -2,6 +2,7 @@ defmodule Tee.GameController do
   use Tee.Web, :controller
 
   alias Tee.Game
+  alias Tee.GameSupervisor
 
   def index(conn, _params) do
     games = Repo.all(Game)
@@ -18,6 +19,7 @@ defmodule Tee.GameController do
 
     case Repo.transaction(Tee.GameService.create(changeset)) do
       {:ok, %{game: game}} ->
+        GameSupervisor.create_game(game.id)
         conn
         |> put_flash(:info, "Game created successfully.")
         |> redirect(to: game_path(conn, :show, game))

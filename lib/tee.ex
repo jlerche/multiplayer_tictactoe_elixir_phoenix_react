@@ -14,6 +14,8 @@ defmodule Tee do
       supervisor(Tee.Endpoint, []),
       # Start your own worker by calling: Tee.Worker.start_link(arg1, arg2, arg3)
       # worker(Tee.Worker, [arg1, arg2, arg3]),
+      supervisor(Tee.Presence, []),
+      supervisor(Tee.GameSupervisor, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
